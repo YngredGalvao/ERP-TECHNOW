@@ -1,0 +1,312 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="testdevModel.Store" Provider="MySql.Data.MySqlClient" ProviderManifestToken="8.0" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="produto">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="descricao" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="codGrupo" Type="int" Nullable="false" />
+          <Property Name="codBarra" Type="varchar" MaxLength="100" />
+          <Property Name="precoCusto" Type="decimal" Precision="11" Scale="3" Nullable="false" />
+          <Property Name="precoVenda" Type="decimal" Precision="11" Scale="3" Nullable="false" />
+          <Property Name="dataHoraCadastro" Type="datetime" Precision="0" Nullable="false" />
+          <Property Name="ativo" Type="bool" Nullable="false" />
+          <Property Name="unidadeMedida" Type="enum" Nullable="false" />
+        </EntityType>
+        <EntityType Name="produto_grupo">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nome" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="bigint" Nullable="false" />
+          <Property Name="login" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="senha" Type="varchar" MaxLength="15" Nullable="false" />
+        </EntityType>
+        <EntityType Name="venda">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="clienteDocumento" Type="varchar" MaxLength="18" />
+          <Property Name="clienteNome" Type="varchar" MaxLength="50" />
+          <Property Name="obs" Type="varchar" MaxLength="300" />
+          <Property Name="total" Type="decimal" Precision="11" Scale="2" Nullable="false" />
+          <Property Name="dataHora" Type="datetime" Precision="0" Nullable="false" />
+        </EntityType>
+        <EntityType Name="venda_produto">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="codVenda" Type="bigint" Nullable="false" />
+          <Property Name="codProduto" Type="bigint" Nullable="false" />
+          <Property Name="precoVenda" Type="decimal" Precision="11" Scale="3" Nullable="false" />
+          <Property Name="quantidade" Type="decimal" Precision="11" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_produtoCodGrupo">
+          <End Role="produto_grupo" Type="Self.produto_grupo" Multiplicity="1" />
+          <End Role="produto" Type="Self.produto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="produto_grupo">
+              <PropertyRef Name="cod" />
+            </Principal>
+            <Dependent Role="produto">
+              <PropertyRef Name="codGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_vendaprodutoCodProduto">
+          <End Role="produto" Type="Self.produto" Multiplicity="1" />
+          <End Role="venda_produto" Type="Self.venda_produto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="produto">
+              <PropertyRef Name="cod" />
+            </Principal>
+            <Dependent Role="venda_produto">
+              <PropertyRef Name="codProduto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_vendaprodutoCodVenda">
+          <End Role="venda" Type="Self.venda" Multiplicity="1" />
+          <End Role="venda_produto" Type="Self.venda_produto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="venda">
+              <PropertyRef Name="cod" />
+            </Principal>
+            <Dependent Role="venda_produto">
+              <PropertyRef Name="codVenda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testdevModelStoreContainer">
+          <EntitySet Name="produto" EntityType="Self.produto" Schema="testdev" store:Type="Tables" />
+          <EntitySet Name="produto_grupo" EntityType="Self.produto_grupo" Schema="testdev" store:Type="Tables" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" Schema="testdev" store:Type="Tables" />
+          <EntitySet Name="venda" EntityType="Self.venda" Schema="testdev" store:Type="Tables" />
+          <EntitySet Name="venda_produto" EntityType="Self.venda_produto" Schema="testdev" store:Type="Tables" />
+          <AssociationSet Name="fk_produtoCodGrupo" Association="Self.fk_produtoCodGrupo">
+            <End Role="produto_grupo" EntitySet="produto_grupo" />
+            <End Role="produto" EntitySet="produto" />
+          </AssociationSet>
+          <AssociationSet Name="fk_vendaprodutoCodProduto" Association="Self.fk_vendaprodutoCodProduto">
+            <End Role="produto" EntitySet="produto" />
+            <End Role="venda_produto" EntitySet="venda_produto" />
+          </AssociationSet>
+          <AssociationSet Name="fk_vendaprodutoCodVenda" Association="Self.fk_vendaprodutoCodVenda">
+            <End Role="venda" EntitySet="venda" />
+            <End Role="venda_produto" EntitySet="venda_produto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="testdevModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="produto">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="descricao" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="codGrupo" Type="Int32" Nullable="false" />
+          <Property Name="codBarra" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <Property Name="precoCusto" Type="Decimal" Nullable="false" />
+          <Property Name="precoVenda" Type="Decimal" Nullable="false" />
+          <Property Name="dataHoraCadastro" Type="DateTime" Nullable="false" />
+          <Property Name="ativo" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="produto_grupo" Relationship="Self.fk_produtoCodGrupo" FromRole="produto" ToRole="produto_grupo" />
+          <NavigationProperty Name="venda_produto" Relationship="Self.fk_vendaprodutoCodProduto" FromRole="produto" ToRole="venda_produto" />
+          <Property Name="unidadeMedida" Type="String" Nullable="false" MaxLength="65532" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="produto_grupo">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="produto" Relationship="Self.fk_produtoCodGrupo" FromRole="produto_grupo" ToRole="produto" />
+        </EntityType>
+        <EntityType Name="usuario">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="Int64" Nullable="false" />
+          <Property Name="login" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="senha" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="venda">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="clienteDocumento" Type="String" MaxLength="18" FixedLength="false" Unicode="false" />
+          <Property Name="clienteNome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="obs" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+          <Property Name="total" Type="Decimal" Nullable="false" />
+          <Property Name="dataHora" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="venda_produto" Relationship="Self.fk_vendaprodutoCodVenda" FromRole="venda" ToRole="venda_produto" />
+        </EntityType>
+        <EntityType Name="venda_produto">
+          <Key>
+            <PropertyRef Name="cod" />
+          </Key>
+          <Property Name="cod" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="codVenda" Type="Int64" Nullable="false" />
+          <Property Name="codProduto" Type="Int64" Nullable="false" />
+          <Property Name="precoVenda" Type="Decimal" Nullable="false" />
+          <Property Name="quantidade" Type="Decimal" Nullable="false" />
+          <NavigationProperty Name="produto" Relationship="Self.fk_vendaprodutoCodProduto" FromRole="venda_produto" ToRole="produto" />
+          <NavigationProperty Name="venda" Relationship="Self.fk_vendaprodutoCodVenda" FromRole="venda_produto" ToRole="venda" />
+        </EntityType>
+        <Association Name="fk_produtoCodGrupo">
+          <End Role="produto_grupo" Type="Self.produto_grupo" Multiplicity="1" />
+          <End Role="produto" Type="Self.produto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="produto_grupo">
+              <PropertyRef Name="cod" />
+            </Principal>
+            <Dependent Role="produto">
+              <PropertyRef Name="codGrupo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_vendaprodutoCodProduto">
+          <End Role="produto" Type="Self.produto" Multiplicity="1" />
+          <End Role="venda_produto" Type="Self.venda_produto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="produto">
+              <PropertyRef Name="cod" />
+            </Principal>
+            <Dependent Role="venda_produto">
+              <PropertyRef Name="codProduto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_vendaprodutoCodVenda">
+          <End Role="venda" Type="Self.venda" Multiplicity="1" />
+          <End Role="venda_produto" Type="Self.venda_produto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="venda">
+              <PropertyRef Name="cod" />
+            </Principal>
+            <Dependent Role="venda_produto">
+              <PropertyRef Name="codVenda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="testdevEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="produto" EntityType="Self.produto" />
+          <EntitySet Name="produto_grupo" EntityType="Self.produto_grupo" />
+          <EntitySet Name="usuario" EntityType="Self.usuario" />
+          <EntitySet Name="venda" EntityType="Self.venda" />
+          <EntitySet Name="venda_produto" EntityType="Self.venda_produto" />
+          <AssociationSet Name="fk_produtoCodGrupo" Association="Self.fk_produtoCodGrupo">
+            <End Role="produto_grupo" EntitySet="produto_grupo" />
+            <End Role="produto" EntitySet="produto" />
+          </AssociationSet>
+          <AssociationSet Name="fk_vendaprodutoCodProduto" Association="Self.fk_vendaprodutoCodProduto">
+            <End Role="produto" EntitySet="produto" />
+            <End Role="venda_produto" EntitySet="venda_produto" />
+          </AssociationSet>
+          <AssociationSet Name="fk_vendaprodutoCodVenda" Association="Self.fk_vendaprodutoCodVenda">
+            <End Role="venda" EntitySet="venda" />
+            <End Role="venda_produto" EntitySet="venda_produto" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="testdevModelStoreContainer" CdmEntityContainer="testdevEntities">
+          <EntitySetMapping Name="produto">
+            <EntityTypeMapping TypeName="testdevModel.produto">
+              <MappingFragment StoreEntitySet="produto">
+                <ScalarProperty Name="unidadeMedida" ColumnName="unidadeMedida" />
+                <ScalarProperty Name="cod" ColumnName="cod" />
+                <ScalarProperty Name="descricao" ColumnName="descricao" />
+                <ScalarProperty Name="codGrupo" ColumnName="codGrupo" />
+                <ScalarProperty Name="codBarra" ColumnName="codBarra" />
+                <ScalarProperty Name="precoCusto" ColumnName="precoCusto" />
+                <ScalarProperty Name="precoVenda" ColumnName="precoVenda" />
+                <ScalarProperty Name="dataHoraCadastro" ColumnName="dataHoraCadastro" />
+                <ScalarProperty Name="ativo" ColumnName="ativo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="produto_grupo">
+            <EntityTypeMapping TypeName="testdevModel.produto_grupo">
+              <MappingFragment StoreEntitySet="produto_grupo">
+                <ScalarProperty Name="cod" ColumnName="cod" />
+                <ScalarProperty Name="nome" ColumnName="nome" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="usuario">
+            <EntityTypeMapping TypeName="testdevModel.usuario">
+              <MappingFragment StoreEntitySet="usuario">
+                <ScalarProperty Name="cod" ColumnName="cod" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="senha" ColumnName="senha" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="venda">
+            <EntityTypeMapping TypeName="testdevModel.venda">
+              <MappingFragment StoreEntitySet="venda">
+                <ScalarProperty Name="cod" ColumnName="cod" />
+                <ScalarProperty Name="clienteDocumento" ColumnName="clienteDocumento" />
+                <ScalarProperty Name="clienteNome" ColumnName="clienteNome" />
+                <ScalarProperty Name="obs" ColumnName="obs" />
+                <ScalarProperty Name="total" ColumnName="total" />
+                <ScalarProperty Name="dataHora" ColumnName="dataHora" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="venda_produto">
+            <EntityTypeMapping TypeName="testdevModel.venda_produto">
+              <MappingFragment StoreEntitySet="venda_produto">
+                <ScalarProperty Name="cod" ColumnName="cod" />
+                <ScalarProperty Name="codVenda" ColumnName="codVenda" />
+                <ScalarProperty Name="codProduto" ColumnName="codProduto" />
+                <ScalarProperty Name="precoVenda" ColumnName="precoVenda" />
+                <ScalarProperty Name="quantidade" ColumnName="quantidade" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

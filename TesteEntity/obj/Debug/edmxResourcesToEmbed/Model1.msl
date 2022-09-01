@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="testdevModelStoreContainer" CdmEntityContainer="testdevEntities">
+    <EntitySetMapping Name="produto">
+      <EntityTypeMapping TypeName="testdevModel.produto">
+        <MappingFragment StoreEntitySet="produto">
+          <ScalarProperty Name="unidadeMedida" ColumnName="unidadeMedida" />
+          <ScalarProperty Name="cod" ColumnName="cod" />
+          <ScalarProperty Name="descricao" ColumnName="descricao" />
+          <ScalarProperty Name="codGrupo" ColumnName="codGrupo" />
+          <ScalarProperty Name="codBarra" ColumnName="codBarra" />
+          <ScalarProperty Name="precoCusto" ColumnName="precoCusto" />
+          <ScalarProperty Name="precoVenda" ColumnName="precoVenda" />
+          <ScalarProperty Name="dataHoraCadastro" ColumnName="dataHoraCadastro" />
+          <ScalarProperty Name="ativo" ColumnName="ativo" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="produto_grupo">
+      <EntityTypeMapping TypeName="testdevModel.produto_grupo">
+        <MappingFragment StoreEntitySet="produto_grupo">
+          <ScalarProperty Name="cod" ColumnName="cod" />
+          <ScalarProperty Name="nome" ColumnName="nome" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuario">
+      <EntityTypeMapping TypeName="testdevModel.usuario">
+        <MappingFragment StoreEntitySet="usuario">
+          <ScalarProperty Name="cod" ColumnName="cod" />
+          <ScalarProperty Name="login" ColumnName="login" />
+          <ScalarProperty Name="senha" ColumnName="senha" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="venda">
+      <EntityTypeMapping TypeName="testdevModel.venda">
+        <MappingFragment StoreEntitySet="venda">
+          <ScalarProperty Name="cod" ColumnName="cod" />
+          <ScalarProperty Name="clienteDocumento" ColumnName="clienteDocumento" />
+          <ScalarProperty Name="clienteNome" ColumnName="clienteNome" />
+          <ScalarProperty Name="obs" ColumnName="obs" />
+          <ScalarProperty Name="total" ColumnName="total" />
+          <ScalarProperty Name="dataHora" ColumnName="dataHora" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="venda_produto">
+      <EntityTypeMapping TypeName="testdevModel.venda_produto">
+        <MappingFragment StoreEntitySet="venda_produto">
+          <ScalarProperty Name="cod" ColumnName="cod" />
+          <ScalarProperty Name="codVenda" ColumnName="codVenda" />
+          <ScalarProperty Name="codProduto" ColumnName="codProduto" />
+          <ScalarProperty Name="precoVenda" ColumnName="precoVenda" />
+          <ScalarProperty Name="quantidade" ColumnName="quantidade" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

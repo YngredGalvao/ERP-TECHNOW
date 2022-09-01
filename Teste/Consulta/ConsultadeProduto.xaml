@@ -1,0 +1,46 @@
+﻿<Window x:Class="Teste.ConsultadeProduto"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+
+        xmlns:local="clr-namespace:Teste"
+        mc:Ignorable="d"
+        Title="Consulta de Produto" Height="411.183" Width="auto" WindowStartupLocation="CenterScreen" Loaded="MetroWindow_Loaded" ResizeMode="NoResize">
+    <Grid>
+        <Border Margin="10,10,10,0" Background="White" VerticalAlignment="Top" Padding="30" CornerRadius="10" Height="363">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
+            </Border.Effect>
+            <StackPanel Margin="-30,-30,-30,14">
+                <DataGrid IsReadOnly="True" AutoGenerateColumns="False" Name="ProdutoGrid" Height="321" >
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Cod Produto"  Binding="{Binding cod}" />
+                        <DataGridTextColumn Header="Produto"  Binding="{Binding descricao}"/>
+                        <DataGridTextColumn Header="Grupo" Binding="{Binding nome}"/>
+                        <DataGridTextColumn Header="Preço de custo" Binding="{Binding precoCusto, StringFormat=\{0:C\}}" />
+                        <DataGridTextColumn Header="Preço de venda" Binding="{Binding precoVenda, StringFormat=\{0:C\}}"/>
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Alterar" Click="BtnAlterar_Click" ></Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn >
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Excluir" Click="btnRemover_Click" ></Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </StackPanel>
+        </Border>
+        <Button Background="#FF363636" Name="btnAdicionar" Content="Adicionar" Margin="0,338,16,0" VerticalAlignment="Top" Click="BtnAdicionar_Click" RenderTransformOrigin="0.153,-7.875" Height="29" HorizontalAlignment="Right" Width="142"/>
+
+    </Grid>
+</Window>
+

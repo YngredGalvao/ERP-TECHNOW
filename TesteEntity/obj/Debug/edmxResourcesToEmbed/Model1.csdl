@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="testdevModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="produto">
+    <Key>
+      <PropertyRef Name="cod" />
+    </Key>
+    <Property Name="cod" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="descricao" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="codGrupo" Type="Int32" Nullable="false" />
+    <Property Name="codBarra" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="precoCusto" Type="Decimal" Nullable="false" />
+    <Property Name="precoVenda" Type="Decimal" Nullable="false" />
+    <Property Name="dataHoraCadastro" Type="DateTime" Nullable="false" />
+    <Property Name="ativo" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="produto_grupo" Relationship="Self.fk_produtoCodGrupo" FromRole="produto" ToRole="produto_grupo" />
+    <NavigationProperty Name="venda_produto" Relationship="Self.fk_vendaprodutoCodProduto" FromRole="produto" ToRole="venda_produto" />
+    <Property Name="unidadeMedida" Type="String" Nullable="false" MaxLength="65532" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="produto_grupo">
+    <Key>
+      <PropertyRef Name="cod" />
+    </Key>
+    <Property Name="cod" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="produto" Relationship="Self.fk_produtoCodGrupo" FromRole="produto_grupo" ToRole="produto" />
+  </EntityType>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="cod" />
+    </Key>
+    <Property Name="cod" Type="Int64" Nullable="false" />
+    <Property Name="login" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="senha" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+  </EntityType>
+  <EntityType Name="venda">
+    <Key>
+      <PropertyRef Name="cod" />
+    </Key>
+    <Property Name="cod" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="clienteDocumento" Type="String" MaxLength="18" FixedLength="false" Unicode="false" />
+    <Property Name="clienteNome" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="obs" Type="String" MaxLength="300" FixedLength="false" Unicode="false" />
+    <Property Name="total" Type="Decimal" Nullable="false" />
+    <Property Name="dataHora" Type="DateTime" Nullable="false" />
+    <NavigationProperty Name="venda_produto" Relationship="Self.fk_vendaprodutoCodVenda" FromRole="venda" ToRole="venda_produto" />
+  </EntityType>
+  <EntityType Name="venda_produto">
+    <Key>
+      <PropertyRef Name="cod" />
+    </Key>
+    <Property Name="cod" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="codVenda" Type="Int64" Nullable="false" />
+    <Property Name="codProduto" Type="Int64" Nullable="false" />
+    <Property Name="precoVenda" Type="Decimal" Nullable="false" />
+    <Property Name="quantidade" Type="Decimal" Nullable="false" />
+    <NavigationProperty Name="produto" Relationship="Self.fk_vendaprodutoCodProduto" FromRole="venda_produto" ToRole="produto" />
+    <NavigationProperty Name="venda" Relationship="Self.fk_vendaprodutoCodVenda" FromRole="venda_produto" ToRole="venda" />
+  </EntityType>
+  <Association Name="fk_produtoCodGrupo">
+    <End Role="produto_grupo" Type="Self.produto_grupo" Multiplicity="1" />
+    <End Role="produto" Type="Self.produto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="produto_grupo">
+        <PropertyRef Name="cod" />
+      </Principal>
+      <Dependent Role="produto">
+        <PropertyRef Name="codGrupo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_vendaprodutoCodProduto">
+    <End Role="produto" Type="Self.produto" Multiplicity="1" />
+    <End Role="venda_produto" Type="Self.venda_produto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="produto">
+        <PropertyRef Name="cod" />
+      </Principal>
+      <Dependent Role="venda_produto">
+        <PropertyRef Name="codProduto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_vendaprodutoCodVenda">
+    <End Role="venda" Type="Self.venda" Multiplicity="1" />
+    <End Role="venda_produto" Type="Self.venda_produto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="venda">
+        <PropertyRef Name="cod" />
+      </Principal>
+      <Dependent Role="venda_produto">
+        <PropertyRef Name="codVenda" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="testdevEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="produto" EntityType="Self.produto" />
+    <EntitySet Name="produto_grupo" EntityType="Self.produto_grupo" />
+    <EntitySet Name="usuario" EntityType="Self.usuario" />
+    <EntitySet Name="venda" EntityType="Self.venda" />
+    <EntitySet Name="venda_produto" EntityType="Self.venda_produto" />
+    <AssociationSet Name="fk_produtoCodGrupo" Association="Self.fk_produtoCodGrupo">
+      <End Role="produto_grupo" EntitySet="produto_grupo" />
+      <End Role="produto" EntitySet="produto" />
+    </AssociationSet>
+    <AssociationSet Name="fk_vendaprodutoCodProduto" Association="Self.fk_vendaprodutoCodProduto">
+      <End Role="produto" EntitySet="produto" />
+      <End Role="venda_produto" EntitySet="venda_produto" />
+    </AssociationSet>
+    <AssociationSet Name="fk_vendaprodutoCodVenda" Association="Self.fk_vendaprodutoCodVenda">
+      <End Role="venda" EntitySet="venda" />
+      <End Role="venda_produto" EntitySet="venda_produto" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
